@@ -1,0 +1,70 @@
+package com.ministryoftesting.models.project;
+
+import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
+import java.time.LocalDate;
+
+@Entity
+public class Entry {
+
+    private int id;
+    @NotNull
+    private LocalDate date;
+    @NotNull
+    @Positive
+    private int hours;
+    @NotNull
+    private String description;
+
+    public Entry() {
+
+    }
+
+    public Entry(LocalDate date, int hours, String description) {
+        this.date = date;
+        this.hours = hours;
+        this.description = description;
+    }
+
+    public Entry(int id, LocalDate date, int hours, String description) {
+        this.id = id;
+        this.date = date;
+        this.hours = hours;
+        this.description = description;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public int getHours() {
+        return hours;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public void setHours(int hours) {
+        this.hours = hours;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+}
