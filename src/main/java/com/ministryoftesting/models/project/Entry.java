@@ -66,5 +66,4 @@ public class Entry {
     public void setDescription(String description) {
         this.description = description;
     }
-
 }

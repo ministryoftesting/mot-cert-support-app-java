@@ -11,7 +11,7 @@ public class ReportIT extends IntegrationSetup {
     @Test
     public void getReportReturnsValidReport() {
         Response response = given()
-                                .get("/v1/report/");
+                                .get("/v1/report");
 
         Approvals.verify(response.getBody().asString());
     }

@@ -1,1 +1,1 @@
-{"total":48,"projects":[{"name":"Project 1","hours":24},{"name":"Project 2","hours":16},{"name":"Project 3","hours":8}]}
+{"total":48,"projects":[{"id":1,"name":"Project 1","hours":24},{"id":2,"name":"Project 2","hours":16},{"id":3,"name":"Project 3","hours":8}]}

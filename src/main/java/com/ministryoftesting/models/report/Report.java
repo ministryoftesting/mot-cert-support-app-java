@@ -31,4 +31,11 @@ public class Report {
         this.projects = projects;
     }
 
+    @Override
+    public String toString() {
+        return "Report{" +
+                "total=" + total +
+                ", projects=" + projects.toString() +
+                '}';
+    }
 }

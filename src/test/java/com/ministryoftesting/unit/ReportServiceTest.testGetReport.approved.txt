@@ -1,0 +1,1 @@
+Report{total=48, projects=[Project{id=1, name='Project 1', hours=24}, Project{id=2, name='Project 2', hours=16}, Project{id=3, name='Project 3', hours=8}]}
