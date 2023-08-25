@@ -28,4 +28,12 @@ public class Credentials {
         return id;
     }
 
+    @Override
+    public String toString() {
+        return "Credentials{" +
+                "token='" + token + '\'' +
+                ", admin=" + admin +
+                ", id=" + id +
+                '}';
+    }
 }
