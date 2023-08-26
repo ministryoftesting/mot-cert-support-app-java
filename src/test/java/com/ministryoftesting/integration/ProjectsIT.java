@@ -17,7 +17,7 @@ public class ProjectsIT extends IntegrationSetup {
     public void returnPositiveResponseWhenCreatingProject() {
         Response response = given()
                 .header("Content-Type", "application/json")
-                .body(new Project("Project 3", "Ate Cake"))
+                .body(new Project("Project 1", "Ate Cake"))
                 .when()
                 .post("/v1/project");
 
@@ -87,7 +87,7 @@ public class ProjectsIT extends IntegrationSetup {
     public void returnPositiveResponseSubmittingTimesheet(){
         Response response = given()
                 .header("Content-Type", "application/json")
-                .body(new Entry(LocalDate.of(2050, 1, 1), 8, "Ate cake"))
+                .body(new Entry(1, LocalDate.of(2050, 1, 1), 8, "Ate cake"))
                 .when()
                 .post("/v1/project/1/entry");
 
@@ -98,7 +98,7 @@ public class ProjectsIT extends IntegrationSetup {
     public void returnNegativeResponseSubmittingTimesheet(){
         Response response = given()
                 .header("Content-Type", "application/json")
-                .body(new Entry(null, 0, null))
+                .body(new Entry(1, null, 0, null))
                 .when()
                 .post("/v1/project/1/entry");
 

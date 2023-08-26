@@ -51,4 +51,14 @@ public class ProjectDetails {
     public void setEntries(List<Entry> entries) {
         this.entries = entries;
     }
+
+    @Override
+    public String toString() {
+        return "ProjectDetails{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", total=" + total +
+                ", entries=" + entries +
+                '}';
+    }
 }

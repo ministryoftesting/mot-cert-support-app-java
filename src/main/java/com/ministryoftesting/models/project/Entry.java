@@ -22,14 +22,14 @@ public class Entry {
 
     }
 
-    public Entry(LocalDate date, int hours, String description) {
+    public Entry(int id, LocalDate date, int hours, String description) {
+        this.id = id;
         this.date = date;
         this.hours = hours;
         this.description = description;
     }
 
-    public Entry(int id, LocalDate date, int hours, String description) {
-        this.id = id;
+    public Entry(LocalDate date, int hours, String description) {
         this.date = date;
         this.hours = hours;
         this.description = description;
@@ -65,5 +65,15 @@ public class Entry {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "Entry{" +
+                "id=" + id +
+                ", date=" + date +
+                ", hours=" + hours +
+                ", description='" + description + '\'' +
+                '}';
     }
 }
