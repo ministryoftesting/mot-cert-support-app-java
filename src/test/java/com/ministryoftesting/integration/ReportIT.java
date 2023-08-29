@@ -20,7 +20,7 @@ public class ReportIT extends IntegrationSetup {
                 .as(Credentials.class);
 
         Report response = given()
-                                .header("Cookie", "token=" + credentials.getToken())
+                                .header("Authorization", "Bearer " + credentials.getToken())
                                 .get("/v1/report")
                                 .as(Report.class);
 

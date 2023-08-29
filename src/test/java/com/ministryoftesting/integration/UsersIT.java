@@ -29,7 +29,7 @@ public class UsersIT extends IntegrationSetup {
         Response response = given()
                 .body(new User("Jon", "test@email.com", "password123", "user"))
                 .contentType("application/json")
-                .header("Cookie", "token=" + token)
+                .header("Authorization", "Bearer " + token)
                 .post("/v1/user");
 
         assertEquals(201, response.getStatusCode());
@@ -40,7 +40,7 @@ public class UsersIT extends IntegrationSetup {
         Response response = given()
                 .body(new User(null, null, null, null))
                 .contentType("application/json")
-                .header("Cookie", "token=" + token)
+                .header("Authorization", "Bearer " + token)
                 .post("/v1/user");
 
         assertEquals(400, response.getStatusCode());
@@ -51,12 +51,12 @@ public class UsersIT extends IntegrationSetup {
         CreatedID createdID = given()
                 .body(new User("delete-me", "delete@me.com", "password123", "user"))
                 .contentType("application/json")
-                .header("Cookie", "token=" + token)
+                .header("Authorization", "Bearer " + token)
                 .post("/v1/user")
                 .as(CreatedID.class);
 
         Response response = given()
-                .header("Cookie", "token=" + token)
+                .header("Authorization", "Bearer " + token)
                 .delete("/v1/user/" + createdID.getId());
 
         assertEquals(202, response.getStatusCode());
@@ -65,7 +65,7 @@ public class UsersIT extends IntegrationSetup {
     @Test
     public void positiveResponseWhenGettingUserProfile(){
         Response response = given()
-                .header("Cookie", "token=" + token)
+                .header("Authorization", "Bearer " + token)
                 .get("/v1/user/1");
 
         assertEquals(200, response.getStatusCode());
@@ -74,7 +74,7 @@ public class UsersIT extends IntegrationSetup {
     @Test
     public void negativeResponseWhenGettingUserProfile(){
         Response response = given()
-                .header("Cookie", "token=" + token)
+                .header("Authorization", "Bearer " + token)
                 .get("/v1/user/20");
 
         assertEquals(404, response.getStatusCode());
@@ -85,14 +85,14 @@ public class UsersIT extends IntegrationSetup {
         CreatedID createdID = given()
                 .body(new User("update-me", "update@me.com", "password123", "user"))
                 .contentType("application/json")
-                .header("Cookie", "token=" + token)
+                .header("Authorization", "Bearer " + token)
                 .post("/v1/user")
                 .as(CreatedID.class);
 
         Response response = given()
                 .body(new User("Ben", "new@email.com", "newpass", "admin"))
                 .contentType("application/json")
-                .header("Cookie", "token=" + token)
+                .header("Authorization", "Bearer " + token)
                 .put("/v1/user/" + createdID.getId());
 
         assertEquals(202, response.getStatusCode());
@@ -103,7 +103,7 @@ public class UsersIT extends IntegrationSetup {
         Response response = given()
                 .body(new User("Ben", null, null, null))
                 .contentType("application/json")
-                .header("Cookie", "token=" + token)
+                .header("Authorization", "Bearer " + token)
                 .put("/v1/user/1");
 
         assertEquals(400, response.getStatusCode());
@@ -112,7 +112,7 @@ public class UsersIT extends IntegrationSetup {
     @Test
     public void positiveResponseWhenGettingUsers(){
         Response response = given()
-                .header("Cookie", "token=" + token)
+                .header("Authorization", "Bearer " + token)
                 .get("/v1/user");
 
         Approvals.verify(response.getBody().prettyPrint());

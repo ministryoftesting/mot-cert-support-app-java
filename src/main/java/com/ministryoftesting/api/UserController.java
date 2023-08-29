@@ -23,8 +23,8 @@ public class UserController {
     private AuthService authService;
 
     @RequestMapping(value = "/v1/user", method = RequestMethod.POST)
-    public ResponseEntity<?> createUser(@Valid @RequestBody User user, @CookieValue(value ="token", required = true) String token) throws SQLException {
-        if(authService.validate(token, LocalDate.now())){
+    public ResponseEntity<?> createUser(@Valid @RequestBody User user, @RequestHeader("Authorization") String token) throws SQLException {
+        if(authService.validate(token.replace("Bearer ", ""), LocalDate.now())){
             return userService.createUser(user);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -32,8 +32,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/v1/user/{userid:[0-9]*}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteUser(@PathVariable(value = "userid") int userId, @CookieValue(value ="token", required = true) String token) throws SQLException {
-        if(authService.validate(token, LocalDate.now())){
+    public ResponseEntity<?> deleteUser(@PathVariable(value = "userid") int userId, @RequestHeader("Authorization") String token) throws SQLException {
+        if(authService.validate(token.replace("Bearer ", ""), LocalDate.now())){
             return userService.deleteUser(userId);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -41,8 +41,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/v1/user/{userid:[0-9]*}", method = RequestMethod.GET)
-    public ResponseEntity<User> getUserProfile(@PathVariable(value = "userid") int userId, @CookieValue(value ="token", required = true) String token) throws SQLException {
-        if(authService.validate(token, LocalDate.now())){
+    public ResponseEntity<User> getUserProfile(@PathVariable(value = "userid") int userId, @RequestHeader("Authorization") String token) throws SQLException {
+        if(authService.validate(token.replace("Bearer ", ""), LocalDate.now())){
             return userService.getUserProfile(userId);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -50,8 +50,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/v1/user/{userid:[0-9]*}", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateUserProfile(@PathVariable(value = "userid") int userId, @Valid @RequestBody User user, @CookieValue(value ="token", required = true) String token) throws SQLException {
-        if(authService.validate(token, LocalDate.now())){
+    public ResponseEntity<?> updateUserProfile(@PathVariable(value = "userid") int userId, @Valid @RequestBody User user, @RequestHeader("Authorization") String token) throws SQLException {
+        if(authService.validate(token.replace("Bearer ", ""), LocalDate.now())){
             return userService.updateUser(userId, user);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -59,8 +59,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/v1/user", method = RequestMethod.GET)
-    public ResponseEntity<List<User>> getUsers(@CookieValue(value ="token", required = true) String token) throws SQLException {
-        if(authService.validate(token, LocalDate.now())){
+    public ResponseEntity<List<User>> getUsers(@RequestHeader("Authorization") String token) throws SQLException {
+        if(authService.validate(token.replace("Bearer ", ""), LocalDate.now())){
             return userService.getUsers();
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

@@ -26,8 +26,8 @@ public class ProjectController {
     private AuthService authService;
 
     @RequestMapping(value = "/v1/project", method = RequestMethod.POST)
-    public ResponseEntity<?> createProject(@Valid @RequestBody Project project, @CookieValue(value ="token", required = true) String token) throws SQLException {
-        if(authService.validate(token, LocalDate.now())){
+    public ResponseEntity<?> createProject(@Valid @RequestBody Project project, @RequestHeader("Authorization") String token) throws SQLException {
+        if(authService.validate(token.replace("Bearer ", ""), LocalDate.now())){
             return projectService.createProject(project);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -35,8 +35,8 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/v1/project/{projectid:[0-9]*}/entry/{entryid:[0-9]*}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteEntry(@PathVariable(value = "projectid") int projectid, @PathVariable(value = "entryid") int entryid, @CookieValue(value ="token", required = true) String token) throws SQLException {
-        if(authService.validate(token, LocalDate.now())) {
+    public ResponseEntity<?> deleteEntry(@PathVariable(value = "projectid") int projectid, @PathVariable(value = "entryid") int entryid, @RequestHeader("Authorization") String token) throws SQLException {
+        if(authService.validate(token.replace("Bearer ", ""), LocalDate.now())) {
             return projectService.deleteEntry(projectid, entryid);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -44,8 +44,8 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/v1/project/{projectid:[0-9]*}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteProject(@PathVariable(value = "projectid") int projectid, @CookieValue(value ="token", required = true) String token) throws SQLException {
-        if(authService.validate(token, LocalDate.now())){
+    public ResponseEntity<?> deleteProject(@PathVariable(value = "projectid") int projectid, @RequestHeader("Authorization") String token) throws SQLException {
+        if(authService.validate(token.replace("Bearer ", ""), LocalDate.now())){
             return projectService.deleteProject(projectid);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -53,8 +53,8 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/v1/project/{projectid:[0-9]*}", method = RequestMethod.GET)
-    public ResponseEntity<ProjectDetails> getProject(@PathVariable(value = "projectid") int projectid, @CookieValue(value ="token", required = true) String token) throws SQLException {
-        if(authService.validate(token, LocalDate.now())) {
+    public ResponseEntity<ProjectDetails> getProject(@PathVariable(value = "projectid") int projectid, @RequestHeader("Authorization") String token) throws SQLException {
+        if(authService.validate(token.replace("Bearer ", ""), LocalDate.now())) {
             return projectService.getProject(projectid);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -62,8 +62,8 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/v1/project", method = RequestMethod.GET)
-    public ResponseEntity<List<Project>> getProjects(@CookieValue(value ="token", required = true) String token) throws SQLException {
-        if(authService.validate(token, LocalDate.now())){
+    public ResponseEntity<List<Project>> getProjects(@RequestHeader("Authorization") String token) throws SQLException {
+        if(authService.validate(token.replace("Bearer ", ""), LocalDate.now())){
             return projectService.getProjects();
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -71,8 +71,8 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/v1/project/{projectid:[0-9]*}/entry", method = RequestMethod.POST)
-    public ResponseEntity<?> createEntry(@PathVariable(value = "projectid") int projectid, @Valid @RequestBody Entry entry, @CookieValue(value ="token", required = true) String token) throws SQLException {
-        if(authService.validate(token, LocalDate.now())){
+    public ResponseEntity<?> createEntry(@PathVariable(value = "projectid") int projectid, @Valid @RequestBody Entry entry, @RequestHeader("Authorization") String token) throws SQLException {
+        if(authService.validate(token.replace("Bearer ", ""), LocalDate.now())){
             return projectService.createEntry(projectid, entry);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

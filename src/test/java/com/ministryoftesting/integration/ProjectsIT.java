@@ -33,7 +33,7 @@ public class ProjectsIT extends IntegrationSetup {
     public void returnPositiveResponseWhenCreatingProject() {
         Response response = given()
                 .header("Content-Type", "application/json")
-                .header("Cookie", "token=" + token)
+                .header("Authorization", "Bearer " + token)
                 .body(new Project("Project 1", "Ate Cake"))
                 .when()
                 .post("/v1/project");
@@ -45,7 +45,7 @@ public class ProjectsIT extends IntegrationSetup {
     public void returnNegativeResponseWhenCreatingBadProject(){
         Response response = given()
                 .header("Content-Type", "application/json")
-                .header("Cookie", "token=" + token)
+                .header("Authorization", "Bearer " + token)
                 .body(new Project(null, null))
                 .when()
                 .post("/v1/project");
@@ -57,7 +57,7 @@ public class ProjectsIT extends IntegrationSetup {
     public void returnPositiveResponseDeletingEntry(){
         CreatedID projectID = given()
                 .header("Content-Type", "application/json")
-                .header("Cookie", "token=" + token)
+                .header("Authorization", "Bearer " + token)
                 .body(new Project("Project 1", "Ate Cake"))
                 .when()
                 .post("/v1/project")
@@ -65,14 +65,14 @@ public class ProjectsIT extends IntegrationSetup {
 
         CreatedID entryID = given()
                 .header("Content-Type", "application/json")
-                .header("Cookie", "token=" + token)
+                .header("Authorization", "Bearer " + token)
                 .body(new Entry(projectID.getId(), LocalDate.of(2050, 1, 1), 8, "Ate cake"))
                 .when()
                 .post("/v1/project/" + projectID.getId() + "/entry")
                 .as(CreatedID.class);
 
         Response response = given()
-                .header("Cookie", "token=" + token)
+                .header("Authorization", "Bearer " + token)
                 .delete("/v1/project/" + projectID.getId() + "/entry/" + entryID.getId());
 
         assertEquals(202, response.getStatusCode());
@@ -81,7 +81,7 @@ public class ProjectsIT extends IntegrationSetup {
     @Test
     public void returnNegativeResponseDeletingEntry(){
         Response response = given()
-                .header("Cookie", "token=" + token)
+                .header("Authorization", "Bearer " + token)
                 .delete("/v1/project/1/entry/2");
 
         assertEquals(404, response.getStatusCode());
@@ -90,7 +90,7 @@ public class ProjectsIT extends IntegrationSetup {
     @Test
     public void returnPositiveResponseDeletingProject(){
         Response response = given()
-                .header("Cookie", "token=" + token)
+                .header("Authorization", "Bearer " + token)
                 .delete("/v1/project/1");
 
         assertEquals(202, response.getStatusCode());
@@ -99,7 +99,7 @@ public class ProjectsIT extends IntegrationSetup {
     @Test
     public void returnNegativeResponseDeletingProject(){
         Response response = given()
-                .header("Cookie", "token=" + token)
+                .header("Authorization", "Bearer " + token)
                 .delete("/v1/project/99");
 
         assertEquals(404, response.getStatusCode());
@@ -109,14 +109,14 @@ public class ProjectsIT extends IntegrationSetup {
     public void returnPositiveResponseWhenGettingProjectTimesheet(){
         CreatedID createdID = given()
                 .header("Content-Type", "application/json")
-                .header("Cookie", "token=" + token)
+                .header("Authorization", "Bearer " + token)
                 .body(new Project("Project 1", "Ate Cake"))
                 .when()
                 .post("/v1/project")
                 .as(CreatedID.class);
 
         Response response = given()
-                .header("Cookie", "token=" + token)
+                .header("Authorization", "Bearer " + token)
                 .get("/v1/project/" + createdID.getId());
 
         Approvals.verify(response.getBody().prettyPrint());
@@ -125,7 +125,7 @@ public class ProjectsIT extends IntegrationSetup {
     @Test
     public void returnPositiveResponseGettingProjects(){
         Response response = given()
-                .header("Cookie", "token=" + token)
+                .header("Authorization", "Bearer " + token)
                 .get("/v1/project");
 
         Approvals.verify(response.getBody().prettyPrint());
@@ -135,7 +135,7 @@ public class ProjectsIT extends IntegrationSetup {
     public void returnPositiveResponseSubmittingTimesheet(){
         Response response = given()
                 .header("Content-Type", "application/json")
-                .header("Cookie", "token=" + token)
+                .header("Authorization", "Bearer " + token)
                 .body(new Entry(1, LocalDate.of(2050, 1, 1), 8, "Ate cake"))
                 .when()
                 .post("/v1/project/1/entry");
@@ -147,7 +147,7 @@ public class ProjectsIT extends IntegrationSetup {
     public void returnNegativeResponseSubmittingTimesheet(){
         Response response = given()
                 .header("Content-Type", "application/json")
-                .header("Cookie", "token=" + token)
+                .header("Authorization", "Bearer " + token)
                 .body(new Entry(1, null, 0, null))
                 .when()
                 .post("/v1/project/1/entry");
