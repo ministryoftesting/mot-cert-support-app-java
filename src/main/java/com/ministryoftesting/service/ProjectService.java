@@ -1,6 +1,7 @@
 package com.ministryoftesting.service;
 
 import com.ministryoftesting.db.ProjectDB;
+import com.ministryoftesting.models.CreatedID;
 import com.ministryoftesting.models.project.Entry;
 import com.ministryoftesting.models.project.Project;
 import com.ministryoftesting.models.project.ProjectDetails;
@@ -9,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ProjectService {
@@ -17,27 +20,35 @@ public class ProjectService {
     @Autowired
     private ProjectDB projectDB;
 
-    public ResponseEntity<?> createProject(Project projectToCreate) {
-        boolean projectCreated = projectDB.createProject(projectToCreate);
+    public ResponseEntity<CreatedID> createProject(Project projectToCreate) throws SQLException {
+        int projectCreated = projectDB.createProject(projectToCreate);
 
-        if(projectCreated) {
-            return new ResponseEntity<>(HttpStatus.CREATED);
+        if(projectCreated > 0) {
+            CreatedID createdID = new CreatedID(projectCreated);
+
+            return new ResponseEntity<>(createdID, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    public ResponseEntity<?> deleteProject(int projectId) {
-        boolean projectDeleted = projectDB.deleteProject(projectId);
+    public ResponseEntity<?> deleteProject(int projectId) throws SQLException {
+        ProjectDetails project = projectDB.getProject(projectId);
 
-        if(projectDeleted) {
+        if(project != null){
+            for(Entry entry : project.getEntries()){
+                projectDB.deleteEntry(projectId, entry.getId());
+            }
+
+            projectDB.deleteProject(projectId);
+
             return ResponseEntity.status(HttpStatus.ACCEPTED).build();
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
-    public ResponseEntity<?> deleteEntry(int projectId, int entryId) {
+    public ResponseEntity<?> deleteEntry(int projectId, int entryId) throws SQLException {
         boolean entryDeleted = projectDB.deleteEntry(projectId, entryId);
 
         if(entryDeleted) {
@@ -47,7 +58,7 @@ public class ProjectService {
         }
     }
 
-    public ResponseEntity<ProjectDetails> getProject(int projectId) {
+    public ResponseEntity<ProjectDetails> getProject(int projectId) throws SQLException {
         ProjectDetails project = projectDB.getProject(projectId);
 
         if(project != null) {
@@ -57,17 +68,19 @@ public class ProjectService {
         }
     }
 
-    public ResponseEntity<ArrayList<Project>> getProjects() {
-        ArrayList<Project> projects = projectDB.getProjects();
+    public ResponseEntity<List<Project>> getProjects() throws SQLException {
+        List<Project> projects = projectDB.getProjects();
 
         return ResponseEntity.status(HttpStatus.OK).body(projects);
     }
 
-    public ResponseEntity<?> createEntry(int projectId, Entry entry) {
-        boolean entryCreated = projectDB.createEntry(projectId, entry);
+    public ResponseEntity<?> createEntry(int projectId, Entry entry) throws SQLException {
+        int entryCreated = projectDB.createEntry(projectId, entry);
 
-        if(entryCreated) {
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+        if(entryCreated > 0) {
+            CreatedID createdID = new CreatedID(entryCreated);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdID);
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

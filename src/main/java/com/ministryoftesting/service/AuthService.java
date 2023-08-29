@@ -43,11 +43,7 @@ public class AuthService {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    public ResponseEntity validate(String token, LocalDate date) throws SQLException {
-        if(authDB.checkSession(token, date)){
-            return new ResponseEntity(HttpStatus.OK);
-        } else {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
-        }
+    public boolean validate(String token, LocalDate date) throws SQLException {
+        return authDB.checkSession(token, date);
     }
 }

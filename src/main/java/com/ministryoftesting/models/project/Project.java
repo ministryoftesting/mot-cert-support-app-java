@@ -3,6 +3,9 @@ package com.ministryoftesting.models.project;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 @Entity
 public class Project {
 
@@ -16,6 +19,12 @@ public class Project {
 
     public Project() {
 
+    }
+
+    public Project(ResultSet resultSet) throws SQLException {
+        this.id = resultSet.getInt("projectid");
+        this.name = resultSet.getString("name");
+        this.description = resultSet.getString("description");
     }
 
     public Project(String name, String description) {

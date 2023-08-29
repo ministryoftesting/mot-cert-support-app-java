@@ -18,6 +18,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -89,26 +91,26 @@ public class AuthServiceTest {
     public void testValidTokenReturnsOk() throws SQLException {
         when(authDB.checkSession("abc123", LocalDate.of(3001, 1, 1))).thenReturn(true);
 
-        ResponseEntity response = authService.validate("abc123", LocalDate.of(3001, 1, 1));
+        boolean response = authService.validate("abc123", LocalDate.of(3001, 1, 1));
 
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
+        assertTrue(response);
     }
 
     @Test
     public void testInValidTokenReturnsUnauhorized() throws SQLException {
         when(authDB.checkSession("lkjhg", LocalDate.of(3001, 1, 1))).thenReturn(false);
 
-        ResponseEntity response = authService.validate("lkjhg", LocalDate.of(3001, 1, 1));
+        boolean response = authService.validate("lkjhg", LocalDate.of(3001, 1, 1));
 
-        assertEquals(response.getStatusCode(), HttpStatus.UNAUTHORIZED);
+        assertFalse(response);
     }
 
     @Test
     public void testExpiredTokenReturnsUnauhorized() throws SQLException {
         when(authDB.checkSession("abc123", LocalDate.of(1999, 1, 1))).thenReturn(false);
 
-        ResponseEntity response = authService.validate("abc123", LocalDate.of(1999, 1, 1));
+        boolean response = authService.validate("abc123", LocalDate.of(1999, 1, 1));
 
-        assertEquals(response.getStatusCode(), HttpStatus.UNAUTHORIZED);
+        assertFalse(response);
     }
 }

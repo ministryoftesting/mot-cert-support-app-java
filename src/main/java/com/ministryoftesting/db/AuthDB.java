@@ -17,27 +17,15 @@ import java.time.LocalDate;
 import java.util.Scanner;
 
 @Component
-public class AuthDB {
-
-    private Connection connection;
+public class AuthDB extends BaseDB {
 
     private final String SELECT_BY_CREDENTIALS = "SELECT * FROM USERS WHERE email = ? AND password = ?";
     private final String CREATE_TOKEN = "INSERT INTO TOKENS (token, admin, expiry) VALUES (?, ?, ?)";
     private final String DELETE_TOKEN = "DELETE  FROM TOKENS WHERE token = ?";
     private final String SELECT_TOKEN = "SELECT * FROM TOKENS WHERE token = ?";
 
-    public AuthDB() throws SQLException, IOException {
-        JdbcDataSource ds = new JdbcDataSource();
-        ds.setURL("jdbc:h2:mem:timesheet;MODE=MySQL");
-        ds.setUser("user");
-        ds.setPassword("password");
-        connection = ds.getConnection();
-
-        executeSqlFile("db.sql");
-        executeSqlFile("seed.sql");
-    }
-
     public LoginResult checkLogin(String username, String password) throws SQLException {
+        Connection connection = getConnection();
         PreparedStatement ps = connection.prepareStatement(SELECT_BY_CREDENTIALS);
         ps.setString(1, username);
         ps.setString(2, password);
@@ -54,6 +42,7 @@ public class AuthDB {
     public Credentials generateSession(String token, String userType, LocalDate expiryDate) throws SQLException {
         boolean isAdmin = userType.equals("admin");
 
+        Connection connection = getConnection();
         PreparedStatement ps = connection.prepareStatement(CREATE_TOKEN);
         ps.setString(1, token);
         ps.setString(2, Boolean.toString(isAdmin));
@@ -65,6 +54,7 @@ public class AuthDB {
     }
 
     public boolean deleteSession(String token) throws SQLException {
+        Connection connection = getConnection();
         PreparedStatement ps = connection.prepareStatement(DELETE_TOKEN);
         ps.setString(1, token);
 
@@ -72,6 +62,7 @@ public class AuthDB {
     }
 
     public boolean checkSession(String token, LocalDate date) throws SQLException {
+        Connection connection = getConnection();
         PreparedStatement ps = connection.prepareStatement(SELECT_TOKEN);
         ps.setString(1, token);
 
@@ -84,18 +75,6 @@ public class AuthDB {
         } else {
             return false;
         }
-    }
-
-    private void executeSqlFile(String filename) throws IOException, SQLException {
-        Reader reader = new InputStreamReader( new ClassPathResource(filename).getInputStream());
-        Scanner sc = new Scanner(reader);
-
-        StringBuffer sb = new StringBuffer();
-        while(sc.hasNext()){
-            sb.append(sc.nextLine());
-        }
-
-        connection.prepareStatement(sb.toString()).executeUpdate();
     }
 
 }

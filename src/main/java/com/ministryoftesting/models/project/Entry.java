@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 
 @Entity
@@ -33,6 +35,13 @@ public class Entry {
         this.date = date;
         this.hours = hours;
         this.description = description;
+    }
+
+    public Entry(ResultSet resultSet) throws SQLException {
+        this.id = resultSet.getInt("entryid");
+        this.date = resultSet.getDate("date").toLocalDate();
+        this.hours = resultSet.getInt("hours");
+        this.description = resultSet.getString("description");
     }
 
     public int getId() {

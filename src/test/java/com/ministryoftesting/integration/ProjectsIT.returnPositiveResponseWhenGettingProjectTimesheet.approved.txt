@@ -1,25 +1,8 @@
 {
     "name": "Project 1",
-    "description": "This is a brief description of Project 1",
-    "total": 21,
+    "description": "Ate Cake",
+    "total": 0,
     "entries": [
-        {
-            "id": 1,
-            "date": "2023-01-01",
-            "hours": 8,
-            "description": "Ate cake"
-        },
-        {
-            "id": 2,
-            "date": "2023-01-02",
-            "hours": 7,
-            "description": "Ate pie"
-        },
-        {
-            "id": 3,
-            "date": "2023-01-03",
-            "hours": 6,
-            "description": "Ate pizza"
-        }
+        
     ]
 }

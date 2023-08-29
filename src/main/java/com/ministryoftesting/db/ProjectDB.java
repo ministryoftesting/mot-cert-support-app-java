@@ -5,51 +5,118 @@ import com.ministryoftesting.models.project.Project;
 import com.ministryoftesting.models.project.ProjectDetails;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class ProjectDB {
+public class ProjectDB extends BaseDB {
 
-    public boolean createProject(Project projectToCreate) {
-        return projectToCreate.getName().equals("Project 1");
+    private final String CREATE_PROJECT = "INSERT INTO PROJECTS (name, description) VALUES (?, ?)";
+    private final String DELETE_PROJECT = "DELETE FROM PROJECTS WHERE projectid = ?";
+    private final String DELETE_ENTRY = "DELETE FROM ENTRIES WHERE projectid = ? AND entryid = ?";
+    private final String INSERT_ENTRY = "INSERT INTO ENTRIES (projectid, date, hours, description) VALUES (?, ?, ?, ?)";
+    private final String SELECT_PROJECTS = "SELECT * FROM PROJECTS";
+    private final String SELECT_PROJECT_BY_ID = "SELECT * FROM PROJECTS WHERE projectid = ?";
+    private final String SELECT_ENTRY_BY_PROJECT_ID = "SELECT * FROM ENTRIES WHERE projectid = ?";
+    public int createProject(Project projectToCreate) throws SQLException {
+        Connection connection = getConnection();
+        PreparedStatement ps = connection.prepareStatement(CREATE_PROJECT);
+        ps.setString(1, projectToCreate.getName());
+        ps.setString(2, projectToCreate.getDescription());
+
+        if(ps.executeUpdate() > 0){
+            ResultSet lastInsertId = connection.prepareStatement("SELECT LAST_INSERT_ID()").executeQuery();
+            lastInsertId.next();
+
+            return lastInsertId.getInt("LAST_INSERT_ID()");
+        } else {
+            return 0;
+        }
     }
 
-    public boolean deleteProject(int projectId) {
-        return projectId == 1;
+    public boolean deleteProject(int projectId) throws SQLException {
+        Connection connection = getConnection();
+        PreparedStatement ps = connection.prepareStatement(DELETE_PROJECT);
+        ps.setInt(1, projectId);
+
+        int result = ps.executeUpdate();
+
+        return result == 1;
     }
 
-    public Boolean deleteEntry(int projectId, int entryId) {
-        return projectId == 1 && entryId == 1;
-    }
+    public ProjectDetails getProject(int projectId) throws SQLException {
+        Connection connection = getConnection();
+        PreparedStatement ps = connection.prepareStatement(SELECT_PROJECT_BY_ID);
+        ps.setInt(1, projectId);
 
-    public ProjectDetails getProject(int projectId) {
-        if(projectId == 1){
+        ResultSet projectResults = ps.executeQuery();
+
+        if(projectResults.next()){
+            PreparedStatement ps2 = connection.prepareStatement(SELECT_ENTRY_BY_PROJECT_ID);
+            ps2.setInt(1, projectId);
+
+            ResultSet results = ps2.executeQuery();
+
             List<Entry> entries = new ArrayList<>();
-            entries.add(new Entry(1, LocalDate.of(2023,1,1), 8, "Ate cake"));
-            entries.add(new Entry(2, LocalDate.of(2023,1,2), 7, "Ate pie"));
-            entries.add(new Entry(3, LocalDate.of(2023, 1, 3), 6, "Ate pizza"));
+            int totalHours = 0;
 
-            ProjectDetails projectDetails = new ProjectDetails("Project 1", "This is a brief description of Project 1", 21, entries);
+            while (results.next()) {
+                entries.add(new Entry(results));
+                totalHours += results.getInt("hours");
+            }
 
-            return projectDetails;
+            return new ProjectDetails(projectResults.getString("name"), projectResults.getString("description"), totalHours, entries);
         } else {
             return null;
         }
 
     }
 
-    public ArrayList<Project> getProjects() {
-        ArrayList<Project> projects = new ArrayList<>();
-        projects.add(new Project(1, "Project 1", "This is a brief description of Project 1"));
-        projects.add(new Project(2, "Project 2", "This is a brief description of Project 2"));
-        projects.add(new Project(3, "Project 3", "This is a brief description of Project 3"));
+    public List<Project> getProjects() throws SQLException {
+        Connection connection = getConnection();
+        PreparedStatement ps = connection.prepareStatement(SELECT_PROJECTS);
+
+        ResultSet results = ps.executeQuery();
+        List<Project> projects = new ArrayList<>();
+        while(results.next()){
+            projects.add(new Project(results));
+        }
 
         return projects;
     }
 
-    public Boolean createEntry(int projectId, Entry entry) {
-        return projectId == 1 && entry.getDescription().equals("Ate cake");
+    public int createEntry(int projectId, Entry entry) throws SQLException {
+        Connection connection = getConnection();
+        PreparedStatement ps = connection.prepareStatement(INSERT_ENTRY);
+        ps.setInt(1, projectId);
+        ps.setDate(2, java.sql.Date.valueOf(entry.getDate()));
+        ps.setInt(3, entry.getHours());
+        ps.setString(4, entry.getDescription());
+
+        if(ps.executeUpdate() > 0){
+            ResultSet lastInsertId = connection.prepareStatement("SELECT LAST_INSERT_ID()").executeQuery();
+            lastInsertId.next();
+
+            return lastInsertId.getInt("LAST_INSERT_ID()");
+        } else {
+            return 0;
+        }
+    }
+
+    public Boolean deleteEntry(int projectId, int entryId) throws SQLException {
+        Connection connection = getConnection();
+        PreparedStatement ps = connection.prepareStatement(DELETE_ENTRY);
+        ps.setInt(1, projectId);
+        ps.setInt(2, entryId);
+
+        int result = ps.executeUpdate();
+
+        return result == 1;
     }
 }

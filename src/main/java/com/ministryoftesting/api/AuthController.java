@@ -23,7 +23,10 @@ public class AuthController {
 
     @RequestMapping(value = "/v1/auth/validate", method = RequestMethod.POST)
     public ResponseEntity<?> validate(@RequestBody Token token) throws SQLException {
-        return authService.validate(token.getToken(), LocalDate.now());
+        if(authService.validate(token.getToken(), LocalDate.now()))
+            return new ResponseEntity<>(HttpStatus.OK);
+        else
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @RequestMapping(value = "/v1/auth/login", method = RequestMethod.POST)
