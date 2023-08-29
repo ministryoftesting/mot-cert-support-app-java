@@ -3,6 +3,7 @@ package com.ministryoftesting.db;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.h2.jdbcx.JdbcDataSource;
+import org.h2.tools.Server;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ public class BaseDB {
             connection = ds.getConnection();
             executeSqlFile("db.sql");
             executeSqlFile("seed.sql");
+            Server.createTcpServer("-tcpPort", "9090", "-tcpAllowOthers").start();
         } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
         }
