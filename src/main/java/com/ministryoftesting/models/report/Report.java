@@ -5,12 +5,12 @@ import java.util.List;
 public class Report {
 
     private int total;
-    private List<Project> projects;
+    private List<ProjectSummary> projects;
 
     public Report() {
     }
 
-    public Report(int total, List<Project> projects) {
+    public Report(int total, List<ProjectSummary> projects) {
         this.total = total;
         this.projects = projects;
     }
@@ -23,11 +23,11 @@ public class Report {
         this.total = total;
     }
 
-    public List<Project> getProjects() {
+    public List<ProjectSummary> getProjects() {
         return projects;
     }
 
-    public void setProjects(List<Project> projects) {
+    public void setProjects(List<ProjectSummary> projects) {
         this.projects = projects;
     }
 

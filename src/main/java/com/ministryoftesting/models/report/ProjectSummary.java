@@ -1,6 +1,6 @@
 package com.ministryoftesting.models.report;
 
-public class Project {
+public class ProjectSummary {
 
     private int id;
 
@@ -8,10 +8,10 @@ public class Project {
 
     private int hours;
 
-    public Project() {
+    public ProjectSummary() {
     }
 
-    public Project(int id, String name, int hours) {
+    public ProjectSummary(int id, String name, int hours) {
         this.id = id;
         this.name = name;
         this.hours = hours;
