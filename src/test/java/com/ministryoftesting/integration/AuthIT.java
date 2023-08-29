@@ -1,5 +1,6 @@
 package com.ministryoftesting.integration;
 
+import com.ministryoftesting.models.auth.Credentials;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 
@@ -10,8 +11,14 @@ public class AuthIT extends IntegrationSetup {
 
     @Test
     public void testValidateReturnsPositiveResponse(){
+        Credentials credentials = given()
+                .body("{\"email\":\"admin@test.com\",\"password\":\"password123\"}")
+                .contentType("application/json")
+                .post("/v1/auth/login")
+                .as(Credentials.class);
+
         Response response = given()
-                .body("{\"token\":\"abc123\"}")
+                .body("{\"token\":\"" + credentials.getToken() + "\"}")
                 .contentType("application/json")
                 .post("/v1/auth/validate");
 
@@ -50,8 +57,14 @@ public class AuthIT extends IntegrationSetup {
 
     @Test
     public void testLogoutReturnPositiveResponse(){
+        Credentials credentials = given()
+                .body("{\"email\":\"admin@test.com\",\"password\":\"password123\"}")
+                .contentType("application/json")
+                .post("/v1/auth/login")
+                .as(Credentials.class);
+
         Response response = given()
-                .body("{\"token\":\"abc123\"}")
+                .body("{\"token\":\"" + credentials.getToken() + "\"}")
                 .contentType("application/json")
                 .post("/v1/auth/logout");
 

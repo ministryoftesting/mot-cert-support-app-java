@@ -1,4 +1,4 @@
-package com.ministryoftesting.unit;
+package com.ministryoftesting.unit.service;
 
 import com.ministryoftesting.db.UserDB;
 import com.ministryoftesting.models.user.User;

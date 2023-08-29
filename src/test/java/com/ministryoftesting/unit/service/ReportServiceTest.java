@@ -1,4 +1,4 @@
-package com.ministryoftesting.unit;
+package com.ministryoftesting.unit.service;
 
 import com.ministryoftesting.db.ReportDB;
 import com.ministryoftesting.models.project.Entry;

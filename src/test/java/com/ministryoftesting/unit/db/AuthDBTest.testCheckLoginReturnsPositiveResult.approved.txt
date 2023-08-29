@@ -1,0 +1,1 @@
+LoginResult{isUser=true, userType='admin', id=1}

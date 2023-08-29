@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 
 @RestController
@@ -21,20 +22,17 @@ public class AuthController {
     private AuthService authService;
 
     @RequestMapping(value = "/v1/auth/validate", method = RequestMethod.POST)
-    public ResponseEntity<String> validate(@RequestBody Token token) {
-        LocalDate date = LocalDate.now();
-        date = date.plusDays(1);
-
-        return authService.validate(token.getToken(), date);
+    public ResponseEntity<?> validate(@RequestBody Token token) throws SQLException {
+        return authService.validate(token.getToken(), LocalDate.now());
     }
 
     @RequestMapping(value = "/v1/auth/login", method = RequestMethod.POST)
-    public ResponseEntity<Credentials> login(@RequestBody Login login){
+    public ResponseEntity<Credentials> login(@RequestBody Login login) throws SQLException {
         return authService.login(login.getEmail(), login.getPassword());
     }
 
     @RequestMapping(value = "/v1/auth/logout", method = RequestMethod.POST)
-    public ResponseEntity logout(@RequestBody Token token){
+    public ResponseEntity<?> logout(@RequestBody Token token) throws SQLException {
         return authService.logout(token.getToken());
     }
 

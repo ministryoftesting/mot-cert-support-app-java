@@ -1,0 +1,1 @@
+Credentials{token='abc123', admin=true, id=0}

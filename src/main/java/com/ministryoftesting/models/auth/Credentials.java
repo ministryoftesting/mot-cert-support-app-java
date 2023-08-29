@@ -10,10 +10,9 @@ public class Credentials {
         // Jackson deserialization
     }
 
-    public Credentials(String token, boolean admin, int id) {
+    public Credentials(String token, boolean admin) {
         this.token = token;
         this.admin = admin;
-        this.id = id;
     }
 
     public String getToken() {
@@ -26,6 +25,10 @@ public class Credentials {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
