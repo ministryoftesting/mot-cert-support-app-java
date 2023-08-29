@@ -1,8 +1,11 @@
 package com.ministryoftesting.integration;
 
+import com.ministryoftesting.models.CreatedID;
+import com.ministryoftesting.models.auth.Credentials;
 import com.ministryoftesting.models.user.User;
 import io.restassured.response.Response;
 import org.approvaltests.Approvals;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -10,11 +13,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UsersIT extends IntegrationSetup {
 
+    private String token;
+    @BeforeEach
+    public void getToken() {
+        Credentials credentials = given()
+                .body("{\"email\":\"admin@test.com\",\"password\":\"password123\"}")
+                .contentType("application/json")
+                .post("/v1/auth/login")
+                .as(Credentials.class);
+
+        token = credentials.getToken();
+    }
     @Test
     public void positiveResponseWhenCreatingUser(){
         Response response = given()
                 .body(new User("Jon", "test@email.com", "password123", "user"))
                 .contentType("application/json")
+                .header("Cookie", "token=" + token)
                 .post("/v1/user");
 
         assertEquals(201, response.getStatusCode());
@@ -25,6 +40,7 @@ public class UsersIT extends IntegrationSetup {
         Response response = given()
                 .body(new User(null, null, null, null))
                 .contentType("application/json")
+                .header("Cookie", "token=" + token)
                 .post("/v1/user");
 
         assertEquals(400, response.getStatusCode());
@@ -32,8 +48,16 @@ public class UsersIT extends IntegrationSetup {
 
     @Test
     public void positiveResponseWhenDeletingUser(){
+        CreatedID createdID = given()
+                .body(new User("delete-me", "delete@me.com", "password123", "user"))
+                .contentType("application/json")
+                .header("Cookie", "token=" + token)
+                .post("/v1/user")
+                .as(CreatedID.class);
+
         Response response = given()
-                .delete("/v1/user/1");
+                .header("Cookie", "token=" + token)
+                .delete("/v1/user/" + createdID.getId());
 
         assertEquals(202, response.getStatusCode());
     }
@@ -41,6 +65,7 @@ public class UsersIT extends IntegrationSetup {
     @Test
     public void positiveResponseWhenGettingUserProfile(){
         Response response = given()
+                .header("Cookie", "token=" + token)
                 .get("/v1/user/1");
 
         assertEquals(200, response.getStatusCode());
@@ -49,17 +74,26 @@ public class UsersIT extends IntegrationSetup {
     @Test
     public void negativeResponseWhenGettingUserProfile(){
         Response response = given()
-                .get("/v1/user/2");
+                .header("Cookie", "token=" + token)
+                .get("/v1/user/20");
 
         assertEquals(404, response.getStatusCode());
     }
 
     @Test
     public void positiveResponseWhenUpdateUserProfile(){
+        CreatedID createdID = given()
+                .body(new User("update-me", "update@me.com", "password123", "user"))
+                .contentType("application/json")
+                .header("Cookie", "token=" + token)
+                .post("/v1/user")
+                .as(CreatedID.class);
+
         Response response = given()
                 .body(new User("Ben", "new@email.com", "newpass", "admin"))
                 .contentType("application/json")
-                .put("/v1/user/1");
+                .header("Cookie", "token=" + token)
+                .put("/v1/user/" + createdID.getId());
 
         assertEquals(202, response.getStatusCode());
     }
@@ -69,6 +103,7 @@ public class UsersIT extends IntegrationSetup {
         Response response = given()
                 .body(new User("Ben", null, null, null))
                 .contentType("application/json")
+                .header("Cookie", "token=" + token)
                 .put("/v1/user/1");
 
         assertEquals(400, response.getStatusCode());
@@ -77,6 +112,7 @@ public class UsersIT extends IntegrationSetup {
     @Test
     public void positiveResponseWhenGettingUsers(){
         Response response = given()
+                .header("Cookie", "token=" + token)
                 .get("/v1/user");
 
         Approvals.verify(response.getBody().prettyPrint());

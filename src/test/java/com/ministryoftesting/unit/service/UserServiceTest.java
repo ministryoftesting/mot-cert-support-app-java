@@ -1,6 +1,7 @@
 package com.ministryoftesting.unit.service;
 
 import com.ministryoftesting.db.UserDB;
+import com.ministryoftesting.models.CreatedID;
 import com.ministryoftesting.models.user.User;
 import com.ministryoftesting.service.UserService;
 import org.approvaltests.Approvals;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,17 +35,18 @@ public class UserServiceTest {
     }
 
     @Test
-    public void creatingUserReturnPositiveResult() {
+    public void creatingUserReturnPositiveResult() throws SQLException {
         User user = new User("Jon", "test@email.com", "password123", "user");
-        when(userDB.createUser(user)).thenReturn(true);
+        when(userDB.createUser(user)).thenReturn(1);
 
-        ResponseEntity<?> response = userService.createUser(user);
+        ResponseEntity<CreatedID> response = userService.createUser(user);
 
         assertEquals(response.getStatusCode(), HttpStatus.CREATED);
+        assertEquals(response.getBody().getId(), 1);
     }
 
     @Test
-    public void deletingExistingUserReturnsPositiveResult() {
+    public void deletingExistingUserReturnsPositiveResult() throws SQLException {
         when(userDB.deleteUser(1)).thenReturn(true);
 
         ResponseEntity<Void> response = userService.deleteUser(1);
@@ -52,7 +55,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void deletingNonExistingUserReturnsNegativeResult() {
+    public void deletingNonExistingUserReturnsNegativeResult() throws SQLException {
         when(userDB.deleteUser(2)).thenReturn(false);
 
         ResponseEntity<Void> response = userService.deleteUser(2);
@@ -61,7 +64,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void requestingExistingUserReturnsPositiveResult(){
+    public void requestingExistingUserReturnsPositiveResult() throws SQLException {
         User user = new User("Jon", "test@email.com", "password", "user");
         when(userDB.getUserProfile(1)).thenReturn(user);
 
@@ -71,7 +74,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void requestingNonExistingUserReturnsNegativeResult(){
+    public void requestingNonExistingUserReturnsNegativeResult() throws SQLException {
         when(userDB.getUserProfile(2)).thenReturn(null);
 
         ResponseEntity<User> response = userService.getUserProfile(2);
@@ -80,27 +83,27 @@ public class UserServiceTest {
     }
 
     @Test
-    public void updatingUserReturnsPositiveResult(){
-        User user = new User(1, "Ben", "new@email.com", "newpassword", "user");
-        when(userDB.updateUser(user)).thenReturn(true);
+    public void updatingUserReturnsPositiveResult() throws SQLException {
+        User user = new User( "Ben", "new@email.com", "newpassword", "user");
+        when(userDB.updateUser(1, user)).thenReturn(true);
 
-        ResponseEntity<?> response = userService.updateUser(user);
+        ResponseEntity<?> response = userService.updateUser(1, user);
 
         assertEquals(response.getStatusCode(), HttpStatus.ACCEPTED);
     }
 
     @Test
-    public void updatingNonExistingUserReturnsNegativeResult(){
-        User user = new User(2, "Ben", "newemail.com", "newpassword", "user");
-        when(userDB.updateUser(user)).thenReturn(false);
+    public void updatingNonExistingUserReturnsNegativeResult() throws SQLException {
+        User user = new User( "Ben", "newemail.com", "newpassword", "user");
+        when(userDB.updateUser(2, user)).thenReturn(false);
 
-        ResponseEntity<?> response = userService.updateUser(user);
+        ResponseEntity<?> response = userService.updateUser(2, user);
 
         assertEquals(response.getStatusCode(), HttpStatus.NOT_FOUND);
     }
 
     @Test
-    public void gettingUsersReturnsPositiveResult(){
+    public void gettingUsersReturnsPositiveResult() throws SQLException {
         List<User> users = List.of(
                 new User(1, "Mark", "mark@test.com", "password", "Admin"),
                 new User(2, "Richard", "richard@test.com", "password", "User")

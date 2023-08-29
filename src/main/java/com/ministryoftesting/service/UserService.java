@@ -1,12 +1,14 @@
 package com.ministryoftesting.service;
 
 import com.ministryoftesting.db.UserDB;
+import com.ministryoftesting.models.CreatedID;
 import com.ministryoftesting.models.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @Service
@@ -15,15 +17,18 @@ public class UserService {
     @Autowired
     private UserDB userDB;
 
-    public ResponseEntity<?> createUser(User user) {
-        if(userDB.createUser(user)){
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<CreatedID> createUser(User user) throws SQLException {
+        int userId = userDB.createUser(user);
+
+        if(userId > 0){
+            CreatedID createdID = new CreatedID(userId);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdID);
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    public ResponseEntity<Void> deleteUser(int userId) {
+    public ResponseEntity<Void> deleteUser(int userId) throws SQLException {
         if(userDB.deleteUser(userId)){
             return ResponseEntity.status(HttpStatus.ACCEPTED).build();
         } else {
@@ -31,7 +36,7 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<User> getUserProfile(int userId) {
+    public ResponseEntity<User> getUserProfile(int userId) throws SQLException {
         User user = userDB.getUserProfile(userId);
 
         if(user != null){
@@ -41,15 +46,15 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<?> updateUser(User user) {
-        if(userDB.updateUser(user)){
+    public ResponseEntity<?> updateUser(int userId, User user) throws SQLException {
+        if(userDB.updateUser(userId, user)){
             return ResponseEntity.status(HttpStatus.ACCEPTED).build();
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
-    public ResponseEntity<List<User>> getUsers() {
+    public ResponseEntity<List<User>> getUsers() throws SQLException {
         List<User> users = userDB.getUsers();
 
         return ResponseEntity.status(HttpStatus.OK).body(users);

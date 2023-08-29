@@ -1,16 +1,16 @@
 [
     {
         "id": 1,
-        "username": "Mark",
-        "email": "mark@test.com",
-        "password": "password",
-        "role": "Admin"
+        "username": "administrator",
+        "email": "admin@test.com",
+        "password": "password123",
+        "role": "admin"
     },
     {
         "id": 2,
-        "username": "Richard",
-        "email": "richard@test.com",
-        "password": "password",
-        "role": "User"
+        "username": "Jon",
+        "email": "test@email.com",
+        "password": "password123",
+        "role": "user"
     }
 ]

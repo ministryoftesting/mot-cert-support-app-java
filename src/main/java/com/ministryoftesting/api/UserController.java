@@ -1,6 +1,7 @@
 package com.ministryoftesting.api;
 
 import com.ministryoftesting.models.user.User;
+import com.ministryoftesting.service.AuthService;
 import com.ministryoftesting.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -16,34 +19,52 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AuthService authService;
+
     @RequestMapping(value = "/v1/user", method = RequestMethod.POST)
-    public ResponseEntity<?> createUser(@Valid @RequestBody User user){
-        return userService.createUser(user);
+    public ResponseEntity<?> createUser(@Valid @RequestBody User user, @CookieValue(value ="token", required = true) String token) throws SQLException {
+        if(authService.validate(token, LocalDate.now())){
+            return userService.createUser(user);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
     @RequestMapping(value = "/v1/user/{userid:[0-9]*}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteUser(@PathVariable(value = "userid") int userId){
-        return userService.deleteUser(userId);
+    public ResponseEntity<?> deleteUser(@PathVariable(value = "userid") int userId, @CookieValue(value ="token", required = true) String token) throws SQLException {
+        if(authService.validate(token, LocalDate.now())){
+            return userService.deleteUser(userId);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
     @RequestMapping(value = "/v1/user/{userid:[0-9]*}", method = RequestMethod.GET)
-    public ResponseEntity<User> getUserProfile(@PathVariable(value = "userid") int userId) {
-        return userService.getUserProfile(userId);
+    public ResponseEntity<User> getUserProfile(@PathVariable(value = "userid") int userId, @CookieValue(value ="token", required = true) String token) throws SQLException {
+        if(authService.validate(token, LocalDate.now())){
+            return userService.getUserProfile(userId);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
     @RequestMapping(value = "/v1/user/{userid:[0-9]*}", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateUserProfile(@PathVariable(value = "userid") int userId, @Valid @RequestBody User user){
-        return userService.updateUser(user);
+    public ResponseEntity<?> updateUserProfile(@PathVariable(value = "userid") int userId, @Valid @RequestBody User user, @CookieValue(value ="token", required = true) String token) throws SQLException {
+        if(authService.validate(token, LocalDate.now())){
+            return userService.updateUser(userId, user);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
     @RequestMapping(value = "/v1/user", method = RequestMethod.GET)
-    public ResponseEntity<List<User>> getUsers(){
-        List<User> users = List.of(
-                new User(1, "Mark", "mark@test.com", "password", "Admin"),
-                new User(2, "Richard", "richard@test.com", "password", "User")
-        );
-
-        return ResponseEntity.status(HttpStatus.OK).body(users);
+    public ResponseEntity<List<User>> getUsers(@CookieValue(value ="token", required = true) String token) throws SQLException {
+        if(authService.validate(token, LocalDate.now())){
+            return userService.getUsers();
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
 }
