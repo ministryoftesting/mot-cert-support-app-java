@@ -50,7 +50,6 @@
                 <configuration>
                     <excludes>
                         <exclude>**/e2e/**.java</exclude>
-                        <exclude>**/examples/**.java</exclude>
                     </excludes>
                 </configuration>
             </plugin>

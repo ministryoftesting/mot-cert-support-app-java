@@ -2,13 +2,21 @@
 package com.ministryoftesting.integration.examples;
 
 // Import statements are used to include external libraries or classes for use in this Java file.
+import com.ministryoftesting.api.TimesheetManagerApplication;
 import io.restassured.response.Response; // Import for handling HTTP response data.
 import org.junit.jupiter.api.Test; // Import for using JUnit test annotations.
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 // These are static imports that bring in specific methods or properties from external classes.
 import static io.restassured.RestAssured.given; // Importing the 'given' method from the RestAssured library.
 import static org.junit.jupiter.api.Assertions.assertEquals; // Importing the 'assertEquals' method from JUnit.
 
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = TimesheetManagerApplication.class)
+@ActiveProfiles("dev")
 // This line defines a Java class called 'LoginApiTest'.
 public class LoginApiTest {
 
