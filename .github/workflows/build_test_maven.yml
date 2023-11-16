@@ -13,5 +13,10 @@ jobs:
         with:
           java-version: '18'
           distribution: 'temurin'
-      - name: Build with Maven
+      - name: Build project and run unit and API checks
         run: mvn --batch-mode package
+      - name: Run e2e checks
+        run: |
+          java -jar target//lj-support-app-java-*-exec.jar &
+          sleep 10
+          mvn test -Dtest=LoginTest
