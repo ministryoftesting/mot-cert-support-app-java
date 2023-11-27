@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -21,7 +20,6 @@ public class MockedUnitCheckExample {
     @Mock
     private ProjectDB projectDB;
 
-    @Autowired
     @InjectMocks
     private ProjectService projectService;
 
@@ -36,7 +34,7 @@ public class MockedUnitCheckExample {
 
         projectService.createEntry(1, entry);
 
-        verify(projectDB, times(1)).createEntry(1, entry);
+        verify(projectDB, times(1)).storeEntry(1, entry);
     }
 
 }

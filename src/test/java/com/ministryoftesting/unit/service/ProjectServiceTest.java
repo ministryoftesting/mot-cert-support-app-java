@@ -153,7 +153,7 @@ public class ProjectServiceTest {
     public void returnPositiveWhenEntryCreated() throws SQLException {
         Entry entry = new Entry(LocalDate.of(2023,1,1), 8, "Ate cake");
 
-        when(projectDB.createEntry(1, entry)).thenReturn(1);
+        when(projectDB.storeEntry(1, entry)).thenReturn(1);
 
         ResponseEntity<?> response = projectService.createEntry(1, entry);
 

@@ -30,7 +30,7 @@ public class DataBuilder {
             }
         }
 
-        TimesheetCredential createdCredentials = createStandardUser();
+        TimesheetCredential createdCredentials = createStandardUser(userType);
 
         return createdCredentials;
     }
@@ -43,9 +43,9 @@ public class DataBuilder {
                 .getList("", TimesheetCredential.class);
     }
 
-    private TimesheetCredential createStandardUser() {
+    private TimesheetCredential createStandardUser(String userType) {
         Response response = given()
-                .body(new TimesheetCredential("Jon", "test@email.com", "password123", "user"))
+                .body(new TimesheetCredential("Jon", "test@email.com", "password123", userType))
                 .contentType("application/json")
                 .header("Authorization", "Bearer " + token)
                 .post("/v1/user");

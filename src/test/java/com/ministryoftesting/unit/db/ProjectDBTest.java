@@ -62,7 +62,7 @@ public class ProjectDBTest {
 
     @Test
     public void returnPositiveResultWhenCreatingEntry() throws SQLException {
-        int result = projectDB.createEntry(1, new Entry(LocalDate.now(), 8, "Ate cake"));
+        int result = projectDB.storeEntry(1, new Entry(LocalDate.now(), 8, "Ate cake"));
 
         assertTrue(result > 0);
     }
@@ -80,9 +80,9 @@ public class ProjectDBTest {
     @Test
     public void returnProjectDetailsWhenQueryingProjectDB() throws SQLException {
         int projectId = projectDB.createProject(new Project( "Group project", "This project has lots of entries"));
-        projectDB.createEntry(projectId, new Entry(LocalDate.of(2023,1,1), 8, "Ate cake"));
-        projectDB.createEntry(projectId, new Entry(LocalDate.of(2023,1,2), 7, "Ate pie"));
-        projectDB.createEntry(projectId, new Entry(LocalDate.of(2023, 1, 3), 6, "Ate pizza"));
+        projectDB.storeEntry(projectId, new Entry(LocalDate.of(2023,1,1), 8, "Ate cake"));
+        projectDB.storeEntry(projectId, new Entry(LocalDate.of(2023,1,2), 7, "Ate pie"));
+        projectDB.storeEntry(projectId, new Entry(LocalDate.of(2023, 1, 3), 6, "Ate pizza"));
 
         ProjectDetails project = projectDB.getProject(projectId);
 

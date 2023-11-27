@@ -4,14 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TimesheetCredential {
 
-//    {
-//        "id": 1,
-//            "username": "administrator",
-//            "email": "admin@test.com",
-//            "password": "password123",
-//            "role": "admin"
-//    }
-
     @JsonProperty
     private String id;
     @JsonProperty

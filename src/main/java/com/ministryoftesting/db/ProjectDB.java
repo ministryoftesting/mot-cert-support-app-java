@@ -5,12 +5,10 @@ import com.ministryoftesting.models.project.Project;
 import com.ministryoftesting.models.project.ProjectDetails;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,7 +89,7 @@ public class ProjectDB extends BaseDB {
         return projects;
     }
 
-    public int createEntry(int projectId, Entry entry) throws SQLException {
+    public int storeEntry(int projectId, Entry entry) throws SQLException {
         Connection connection = getConnection();
         PreparedStatement ps = connection.prepareStatement(INSERT_ENTRY);
         ps.setInt(1, projectId);

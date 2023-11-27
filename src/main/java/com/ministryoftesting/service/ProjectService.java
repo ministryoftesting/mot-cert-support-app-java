@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -75,7 +74,7 @@ public class ProjectService {
     }
 
     public ResponseEntity<?> createEntry(int projectId, Entry entry) throws SQLException {
-        int entryCreated = projectDB.createEntry(projectId, entry);
+        int entryCreated = projectDB.storeEntry(projectId, entry);
 
         if(entryCreated > 0) {
             CreatedID createdID = new CreatedID(entryCreated);
