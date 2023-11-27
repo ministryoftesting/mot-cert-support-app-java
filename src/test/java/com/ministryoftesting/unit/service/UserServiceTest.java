@@ -36,10 +36,10 @@ public class UserServiceTest {
 
     @Test
     public void creatingUserReturnPositiveResult() throws SQLException {
-        User user = new User("Jon", "test@email.com", "password123", "user");
-        when(userDB.createUser(user)).thenReturn(1);
+        User user = new User(1, "Jon", "test@email.com", "password123", "user");
+        when(userDB.createUser(user)).thenReturn(user);
 
-        ResponseEntity<CreatedID> response = userService.createUser(user);
+        ResponseEntity<User> response = userService.createUser(user);
 
         assertEquals(response.getStatusCode(), HttpStatus.CREATED);
         assertEquals(response.getBody().getId(), 1);

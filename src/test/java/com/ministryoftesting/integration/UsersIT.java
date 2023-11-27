@@ -48,16 +48,16 @@ public class UsersIT extends IntegrationSetup {
 
     @Test
     public void positiveResponseWhenDeletingUser(){
-        CreatedID createdID = given()
+        User user = given()
                 .body(new User("delete-me", "delete@me.com", "password123", "user"))
                 .contentType("application/json")
                 .header("Authorization", "Bearer " + token)
                 .post("/v1/user")
-                .as(CreatedID.class);
+                .as(User.class);
 
         Response response = given()
                 .header("Authorization", "Bearer " + token)
-                .delete("/v1/user/" + createdID.getId());
+                .delete("/v1/user/" + user.getId());
 
         assertEquals(202, response.getStatusCode());
     }
@@ -82,18 +82,18 @@ public class UsersIT extends IntegrationSetup {
 
     @Test
     public void positiveResponseWhenUpdateUserProfile(){
-        CreatedID createdID = given()
+        User user = given()
                 .body(new User("update-me", "update@me.com", "password123", "user"))
                 .contentType("application/json")
                 .header("Authorization", "Bearer " + token)
                 .post("/v1/user")
-                .as(CreatedID.class);
+                .as(User.class);
 
         Response response = given()
                 .body(new User("Ben", "new@email.com", "newpass", "admin"))
                 .contentType("application/json")
                 .header("Authorization", "Bearer " + token)
-                .put("/v1/user/" + createdID.getId());
+                .put("/v1/user/" + user.getId());
 
         assertEquals(202, response.getStatusCode());
     }

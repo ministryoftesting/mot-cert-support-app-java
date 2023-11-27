@@ -22,14 +22,15 @@ public class UserDBTest {
 
     @Test
     public void returnsPositiveResultWhenCreatingUser() throws SQLException {
-        int result = userDB.createUser(new User("Jon", "test@email.com", "password", "user"));
+        User user = new User("Jon", "test@email.com", "password", "user");
+        User result = userDB.createUser(user);
 
-        assertTrue(result > 0);
+        assertEquals(User.class, result.getClass());
     }
 
     @Test
     public void returnsPositiveResultWhenDeletingUser() throws SQLException {
-        int userId = userDB.createUser(new User("Jon", "test@email.com", "password", "user"));
+        int userId = userDB.createUser(new User("Jon", "test@email.com", "password", "user")).getId();
         boolean result = userDB.deleteUser(userId);
 
         assertTrue(result);
@@ -59,7 +60,7 @@ public class UserDBTest {
     @Test
     public void returnsPositiveResultWhenUpdatingUser() throws SQLException {
         User user = new User("Sam", "fake@fake.com", "hello123", "admin");
-        int userId = userDB.createUser(user);
+        int userId = userDB.createUser(user).getId();
 
         User updatedUser = new User("Sam", "update@update.com", "hello123", "admin");
         boolean result = userDB.updateUser(userId, updatedUser);

@@ -18,7 +18,7 @@ public class UserDB extends BaseDB {
     private final String SELECT_USER_BY_ID = "SELECT * FROM USERS WHERE userid = ?";
     private final String UPDATE_USER_BY_ID = "UPDATE USERS SET username = ?, email = ?, password = ?, role = ? WHERE userid = ?";
 
-    public int createUser(User user) throws SQLException {
+    public User createUser(User user) throws SQLException {
         Connection connection = getConnection();
         PreparedStatement ps = connection.prepareStatement(CREATE_USER);
         ps.setString(1, user.getUsername());
@@ -30,9 +30,9 @@ public class UserDB extends BaseDB {
             ResultSet lastInsertId = connection.prepareStatement("SELECT LAST_INSERT_ID()").executeQuery();
             lastInsertId.next();
 
-            return lastInsertId.getInt("LAST_INSERT_ID()");
+            return new User(lastInsertId.getInt("LAST_INSERT_ID()"), user.getUsername(), user.getEmail(), user.getPassword(), user.getRole());
         } else {
-            return 0;
+            return null;
         }
     }
 

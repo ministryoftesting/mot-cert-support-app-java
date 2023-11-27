@@ -1,7 +1,5 @@
-// This line specifies the package where this Java class belongs.
-package com.ministryoftesting.e2e.examples.module4;
+package com.ministryoftesting.e2e.examples.module5;
 
-// These are import statements, allowing us to use external classes and libraries in our code.
 import com.ministryoftesting.e2e.examples.LoginPage;
 import com.ministryoftesting.e2e.examples.ProjectsPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -10,15 +8,15 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-// This import statement allows us to use specific methods from the JUnit testing framework.
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-// This is the declaration of the Java class named 'LoginTest'.
 public class LoginTest {
 
-    // This is a method in the class, annotated with @Test, indicating it's a test case.
     @Test
-    public void testPageUpdatesToProjectPageAfterLogin() {
+    public void testStandardUserCanLogin() {
+        DataBuilder dataBuilder = new DataBuilder();
+        TimesheetCredential credentials = dataBuilder.getUserCredentials("user");
+
         // Set up the WebDriver for Chrome using WebDriverManager.
         WebDriverManager.chromedriver().setup();
 
@@ -34,8 +32,8 @@ public class LoginTest {
         LoginPage loginPage = new LoginPage(driver);
 
         // Perform actions on the login page: sending email, password, and submitting the form.
-        loginPage.sendEmail("admin@test.com");
-        loginPage.sendPassword("password123");
+        loginPage.sendEmail(credentials.getEmail());
+        loginPage.sendPassword(credentials.getPassword());
         loginPage.submitForm();
 
         // Create an instance of the ProjectsPage class.
@@ -53,4 +51,5 @@ public class LoginTest {
         // Quit the WebDriver, ending the browser session.
         driver.quit();
     }
+
 }

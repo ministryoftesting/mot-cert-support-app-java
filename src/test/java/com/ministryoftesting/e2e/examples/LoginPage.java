@@ -1,5 +1,5 @@
 // Define the Java package where this class belongs
-package com.ministryoftesting.e2e.examples.module4;
+package com.ministryoftesting.e2e.examples;
 
 // Import required Selenium libraries
 import org.openqa.selenium.By;

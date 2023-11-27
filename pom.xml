@@ -49,7 +49,7 @@
                 <version>2.22.0</version>
                 <configuration>
                     <excludes>
-                        <exclude>**/e2e/**.java</exclude>
+                        <exclude>**/e2e/**/**.java</exclude>
                     </excludes>
                 </configuration>
             </plugin>

@@ -17,12 +17,11 @@ public class UserService {
     @Autowired
     private UserDB userDB;
 
-    public ResponseEntity<CreatedID> createUser(User user) throws SQLException {
-        int userId = userDB.createUser(user);
+    public ResponseEntity<User> createUser(User user) throws SQLException {
+        User createdUser = userDB.createUser(user);
 
-        if(userId > 0){
-            CreatedID createdID = new CreatedID(userId);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdID);
+        if(createdUser != null){
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
