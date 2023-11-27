@@ -1,5 +1,5 @@
 // This line specifies the package name where this Java class belongs.
-package com.ministryoftesting.integration.examples;
+package com.ministryoftesting.integration.examples.module4;
 
 // Import statements are used to include external libraries or classes for use in this Java file.
 import com.ministryoftesting.api.TimesheetManagerApplication;

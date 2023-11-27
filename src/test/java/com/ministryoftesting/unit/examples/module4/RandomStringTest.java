@@ -1,5 +1,5 @@
 // This line defines the package name, which organizes code into a specific directory structure.
-package com.ministryoftesting.unit.examples;
+package com.ministryoftesting.unit.examples.module4;
 
 // These lines import necessary libraries and classes for this Java program.
 import com.ministryoftesting.service.RandomString;
