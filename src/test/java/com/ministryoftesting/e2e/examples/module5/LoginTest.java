@@ -1,7 +1,5 @@
 package com.ministryoftesting.e2e.examples.module5;
 
-import com.ministryoftesting.e2e.examples.LoginPage;
-import com.ministryoftesting.e2e.examples.ProjectsPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;

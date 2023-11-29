@@ -2,15 +2,20 @@
 package com.ministryoftesting.e2e.examples.module4;
 
 // These are import statements, allowing us to use external classes and libraries in our code.
-import com.ministryoftesting.e2e.examples.LoginPage;
-import com.ministryoftesting.e2e.examples.ProjectsPage;
+import com.ministryoftesting.e2e.examples.module5.LoginPage;
+import com.ministryoftesting.e2e.examples.module5.ProjectsPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 // This import statement allows us to use specific methods from the JUnit testing framework.
+import java.time.Duration;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 // This is the declaration of the Java class named 'LoginTest'.
@@ -30,21 +35,15 @@ public class LoginTest {
         // Open a web page with the given URL in the Chrome browser.
         driver.get("http://localhost:8080");
 
-        // Create an instance of the LoginPage class, which is a custom class.
-        LoginPage loginPage = new LoginPage(driver);
+        driver.findElement(By.name("email")).sendKeys("admin@test.com");
+        driver.findElement(By.name("password")).sendKeys("password123");
+        driver.findElement(By.cssSelector("button")).click();
 
-        // Perform actions on the login page: sending email, password, and submitting the form.
-        loginPage.sendEmail("admin@test.com");
-        loginPage.sendPassword("password123");
-        loginPage.submitForm();
-
-        // Create an instance of the ProjectsPage class.
-        ProjectsPage projectsPage = new ProjectsPage(driver);
-
-        // Get the title of the ProjectsPage and store it in the 'title' variable.
-        String title = projectsPage.getTitle();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.className(".card-title")));
 
         // Assert that the title of the ProjectsPage is equal to the expected value "Projects".
+        String title = driver.findElement(By.cssSelector(".card-title")).getText();
         assertEquals("Projects", title);
 
         // Close the Chrome browser window.

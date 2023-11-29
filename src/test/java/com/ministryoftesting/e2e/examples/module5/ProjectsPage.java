@@ -1,5 +1,5 @@
 // This line specifies the package name for this Java class.
-package com.ministryoftesting.e2e.examples;
+package com.ministryoftesting.e2e.examples.module5;
 
 // Import statements that bring in external libraries for the code to use.
 import org.openqa.selenium.By;
