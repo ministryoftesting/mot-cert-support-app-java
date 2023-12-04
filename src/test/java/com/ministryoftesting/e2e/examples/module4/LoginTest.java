@@ -2,8 +2,6 @@
 package com.ministryoftesting.e2e.examples.module4;
 
 // These are import statements, allowing us to use external classes and libraries in our code.
-import com.ministryoftesting.e2e.examples.module5.LoginPage;
-import com.ministryoftesting.e2e.examples.module5.ProjectsPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -13,7 +11,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-// This import statement allows us to use specific methods from the JUnit testing framework.
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
