@@ -37,7 +37,7 @@ public class LoginTest {
         driver.findElement(By.cssSelector("button")).click();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.className(".card-title")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".card-title")));
 
         // Assert that the title of the ProjectsPage is equal to the expected value "Projects".
         String title = driver.findElement(By.cssSelector(".card-title")).getText();
