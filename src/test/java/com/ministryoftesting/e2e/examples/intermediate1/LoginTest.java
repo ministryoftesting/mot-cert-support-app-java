@@ -1,4 +1,4 @@
-package com.ministryoftesting.e2e.examples.module5;
+package com.ministryoftesting.e2e.examples.intermediate1;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.Test;

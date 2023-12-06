@@ -69,9 +69,13 @@ public class AuthDB extends BaseDB {
         ResultSet result = ps.executeQuery();
 
         if(result.next()){
-            LocalDate expiryDate = result.getDate("expiry").toLocalDate();
+            if(result.getBoolean("admin")){
+                LocalDate expiryDate = result.getDate("expiry").toLocalDate();
 
-            return expiryDate.isAfter(date);
+                return expiryDate.isAfter(date);
+            } else {
+                return false;
+            }
         } else {
             return false;
         }

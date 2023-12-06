@@ -1,5 +1,5 @@
 // This line indicates that we're placing our code in a specific package called "com.ministryoftesting.unit.examples."
-package com.ministryoftesting.unit.examples.module4;
+package com.ministryoftesting.unit.examples.foundation2;
 
 // We're importing a class called "Test" from the "org.junit.jupiter.api" package.
 import org.junit.jupiter.api.Test;

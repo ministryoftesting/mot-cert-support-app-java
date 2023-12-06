@@ -1,6 +1,5 @@
 package com.ministryoftesting.integration;
 
-import com.ministryoftesting.models.CreatedID;
 import com.ministryoftesting.models.auth.Credentials;
 import com.ministryoftesting.models.user.User;
 import io.restassured.response.Response;

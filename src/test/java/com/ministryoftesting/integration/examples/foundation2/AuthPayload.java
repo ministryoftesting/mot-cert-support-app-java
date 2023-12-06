@@ -1,5 +1,5 @@
 // This line declares that the code is part of a Java package called "com.ministryoftesting.integration.examples."
-package com.ministryoftesting.integration.examples.module4;
+package com.ministryoftesting.integration.examples.foundation2;
 
 // This line imports a class named "JsonProperty" from the "com.fasterxml.jackson" package.
 import com.fasterxml.jackson.annotation.JsonProperty;

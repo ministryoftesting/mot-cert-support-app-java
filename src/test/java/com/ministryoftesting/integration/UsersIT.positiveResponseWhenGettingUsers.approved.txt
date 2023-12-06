@@ -8,6 +8,13 @@
     },
     {
         "id": 2,
+        "username": "user",
+        "email": "user@test.com",
+        "password": "password123",
+        "role": "user"
+    },
+    {
+        "id": 3,
         "username": "Jon",
         "email": "test@email.com",
         "password": "password123",

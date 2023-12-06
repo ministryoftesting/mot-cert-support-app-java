@@ -1,4 +1,4 @@
-package com.ministryoftesting.e2e.examples.module5;
+package com.ministryoftesting.e2e.examples.intermediate1;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

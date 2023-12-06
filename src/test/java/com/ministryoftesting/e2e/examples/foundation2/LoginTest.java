@@ -1,5 +1,5 @@
 // This line specifies the package where this Java class belongs.
-package com.ministryoftesting.e2e.examples.module4;
+package com.ministryoftesting.e2e.examples.foundation2;
 
 // These are import statements, allowing us to use external classes and libraries in our code.
 import io.github.bonigarcia.wdm.WebDriverManager;

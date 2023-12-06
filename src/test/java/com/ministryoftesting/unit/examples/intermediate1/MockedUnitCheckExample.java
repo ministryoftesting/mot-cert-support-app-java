@@ -1,4 +1,4 @@
-package com.ministryoftesting.unit.examples.module5;
+package com.ministryoftesting.unit.examples.intermediate1;
 
 import com.ministryoftesting.db.ProjectDB;
 import com.ministryoftesting.models.project.Entry;

@@ -1,8 +1,0 @@
-{
-    "name": "Project 1",
-    "description": "This is a brief description of Project 1",
-    "total": 0,
-    "entries": [
-        
-    ]
-}
