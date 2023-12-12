@@ -1,4 +1,4 @@
-package com.ministryoftesting.integration.examples.intermediate2;
+package com.ministryoftesting.integration.examples.intermediate1;
 
 import com.ministryoftesting.api.TimesheetManagerApplication;
 import com.ministryoftesting.models.auth.Credentials;
