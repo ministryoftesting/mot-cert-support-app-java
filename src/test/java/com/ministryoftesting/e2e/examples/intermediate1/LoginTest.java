@@ -1,6 +1,7 @@
 package com.ministryoftesting.e2e.examples.intermediate1;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
@@ -13,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class LoginTest {
 
     @Test
+    @DisplayName("Test that a standard user can login")
     public void testStandardUserCanLogin() {
         DataBuilder dataBuilder = new DataBuilder();
         TimesheetCredential credentials = dataBuilder.getUserCredentials("admin");
