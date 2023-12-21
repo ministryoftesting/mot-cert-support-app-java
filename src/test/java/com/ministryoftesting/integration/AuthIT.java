@@ -1,72 +1,60 @@
 package com.ministryoftesting.integration;
 
+import com.ministryoftesting.integration.requests.AuthRequests;
 import com.ministryoftesting.models.auth.Credentials;
+import com.ministryoftesting.models.auth.Login;
+import com.ministryoftesting.models.auth.Token;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 
-import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AuthIT extends IntegrationSetup {
 
     @Test
     public void testValidateReturnsPositiveResponse(){
-        Credentials credentials = given()
-                .body("{\"email\":\"admin@test.com\",\"password\":\"password123\"}")
-                .contentType("application/json")
-                .post("/v1/auth/login")
-                .as(Credentials.class);
+        Login loginPayload = new Login("admin@test.com", "password123");
+        Credentials credentials = AuthRequests.postLogin(loginPayload)
+                                    .as(Credentials.class);
 
-        Response response = given()
-                .body("{\"token\":\"" + credentials.getToken() + "\"}")
-                .contentType("application/json")
-                .post("/v1/auth/validate");
+        Token tokenPayload = new Token(credentials.getToken());
+        Response response = AuthRequests.postValidate(tokenPayload);
 
         assertEquals(200, response.getStatusCode());
     }
 
     @Test
     public void testValidateReturnsNegativeResponse(){
-        Response response = given()
-                .body("{\"token\":\"321cba\"}")
-                .contentType("application/json")
-                .post("/v1/auth/validate");
+        Token tokenPayload = new Token("321cba");
+        Response response = AuthRequests.postValidate(tokenPayload);
 
         assertEquals(401, response.getStatusCode());
     }
 
     @Test
     public void testLoginReturnsPositiveResponse(){
-        Response response = given()
-                .body("{\"email\":\"admin@test.com\",\"password\":\"password123\"}")
-                .contentType("application/json")
-                .post("/v1/auth/login");
+        Login loginPayload = new Login("admin@test.com", "password123");
+        Response response = AuthRequests.postLogin(loginPayload);
 
         assertEquals(200, response.getStatusCode());
     }
 
     @Test
     public void testLoginReturnsNegativeResponse() {
-        Response response = given()
-                .body("{\"email\":\"incorrect@test.com\",\"password\":\"password123\"}")
-                .contentType("application/json")
-                .post("/v1/auth/login");
+        Login loginPayload = new Login("incorrect@test.com", "password123");
+        Response response = AuthRequests.postLogin(loginPayload);
 
         assertEquals(401, response.getStatusCode());
     }
 
     @Test
     public void testLogoutReturnPositiveResponse(){
-        Credentials credentials = given()
-                .body("{\"email\":\"admin@test.com\",\"password\":\"password123\"}")
-                .contentType("application/json")
-                .post("/v1/auth/login")
+        Login loginPayload = new Login("admin@test.com", "password123");
+        Credentials credentials = AuthRequests.postLogin(loginPayload)
                 .as(Credentials.class);
 
-        Response response = given()
-                .body("{\"token\":\"" + credentials.getToken() + "\"}")
-                .contentType("application/json")
-                .post("/v1/auth/logout");
+        Token tokenPayload = new Token(credentials.getToken());
+        Response response = AuthRequests.postLogout(tokenPayload);
 
         assertEquals(202, response.getStatusCode());
     }
